@@ -32,7 +32,7 @@ actors and cards; the same button then restarts it from full time. Double-click
 the time to change the round's length (`2`, `2:30` or `90s`); the change is saved
 in the browser. The demonstration slide (`{.practice}`) reveals each
 word as a fragment. Its 1 minute timer starts when the first word is revealed,
-and you can click it to restart.
+hiding all the words again resets it to 1:00, and you can click it to restart.
 
 The score card slides (`{.scores data-round=n}`) all share one table. Type the
 group names and each round's scores into any of them; the totals add up
