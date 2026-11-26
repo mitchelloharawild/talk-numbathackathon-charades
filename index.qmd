@@ -1,5 +1,5 @@
 ---
-title: "`icebreaker::charades()`{.r}"
+title: "`icebreakR::charades()`{.r}"
 format:
   numbat-revealjs:
     slide-number: false
@@ -8,6 +8,7 @@ format:
     include-after-body:
       - practice.html
       - scores.html
+      - rounds.html
 ---
 
 ## Form groups
@@ -18,11 +19,13 @@ format:
 [4–5 people]{.sub}
 :::
 
+## {.plain .no-footer background-image="charades.jpeg" background-size="contain" background-color="#fff"}
+
 ## How it works
 
 ::: {.rules}
 ```r
-icebreaker::charades
+icebreakR::charades
 ```
 
 ::: {.printed}
@@ -38,7 +41,7 @@ function(team, actor, words) {
   }
   return(score)
 }
-<environment: namespace:icebreaker>
+<environment: namespace:icebreakR>
 ```
 :::
 :::
@@ -110,19 +113,19 @@ Guesses after time don't count
 
 :::
 
-## Round 1 {.break minutes=3}
+## Round 1: [datasets]{.theme} {.break .round data-timer="3"}
 
 ## Scores {.scores data-round="1"}
 
-## Round 2 {.break minutes=3}
+## Round 2: [tidyverse]{.theme} {.break .round data-timer="3"}
 
 ## Scores {.scores data-round="2"}
 
-## Round 3 {.break minutes=3}
+## Round 3: [packages]{.theme} {.break .round data-timer="3"}
 
 ## Scores {.scores data-round="3"}
 
-## Round 4 {.break minutes=3}
+## Round 4: [ggplot2]{.theme} {.break .round data-timer="3"}
 
 ## Final scores {.scores data-round="4"}
 

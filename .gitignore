@@ -4,3 +4,7 @@
 *_files/
 !practice.html
 !scores.html
+!rounds.html
+
+# question cards: kept out of git so players never see them
+/questions/

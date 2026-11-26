@@ -54,3 +54,16 @@
 .reveal .slides .scorecard .total { text-align: center; font-family: var(--display); font-weight: 700; color: var(--navy); }
 .reveal .slides .scorecard.final tr.leader td { background: #fbeae6; }
 .reveal .slides .scorecard.final tr.leader .total, .reveal .slides .scorecard.final tr.leader .name { color: var(--orange); font-weight: 700; }
+
+/* round countdowns: the theme in the heading, and no "Ends at" time */
+.reveal .slides section.break > h2 .theme { color: var(--orange); }
+.reveal .slides section.break > .break-back { display: none !important; }
+
+/* round timers (rounds.html): one button starts or restarts; double-click the time to change it */
+.reveal .slides section.round > .countdown { cursor: pointer; user-select: none; }
+.reveal .slides section.round > .countdown[hidden] { display: none; }
+.reveal .slides section.round > .countdown.done { color: var(--orange); }
+.reveal .slides section.round > .round-input { width: 4.2em; margin: 0; padding: 0 .1em; font-family: var(--display); font-weight: 700; font-size: 210px; line-height: 1.08; letter-spacing: -.02em; text-align: center; color: inherit; background: #fff; border: 4px solid var(--lavender); border-radius: 24px; }
+.reveal .slides section.round > .round-input:focus { outline: none; border-color: var(--blue); }
+.reveal .slides section.round > .round-start { margin: 24px 0 0; padding: 10px 44px; font-family: var(--display); font-weight: 700; font-size: 40px; color: var(--navy); background: #fff; border: 4px solid var(--lavender); border-radius: 99px; cursor: pointer; }
+.reveal .slides section.round > .round-start:hover { border-color: var(--blue); color: var(--blue); }
