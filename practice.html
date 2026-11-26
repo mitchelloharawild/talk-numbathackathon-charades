@@ -1,0 +1,32 @@
+<script>
+// Practice timer: a 1 minute countdown for slides with class "practice".
+// It shows 1:00 on the slide and starts when the first word (fragment) is
+// revealed, then keeps running as the next words are revealed.
+// Click it to restart.
+(function () {
+  const MINUTES = 1;
+  const slides = document.querySelector(".reveal .slides");
+  if (!slides || !slides.querySelector("section.practice")) return;
+  const el = document.createElement("div");
+  el.className = "practice-timer";
+  el.setAttribute("role", "timer");
+  el.title = "Click to restart";
+  slides.append(el);
+  let end = null;
+  el.addEventListener("click", () => { end = Date.now() + MINUTES * 60000; tick(); });
+  const pad = n => String(n).padStart(2, "0");
+  function tick() {
+    const on = !!slides.querySelector("section.practice.present");
+    const started = !!slides.querySelector("section.practice.present .fragment.visible");
+    if (started && end === null) end = Date.now() + MINUTES * 60000;
+    const left = Math.max(0, end === null ? MINUTES * 60000 : end - Date.now());
+    const t = Math.ceil(left / 1000);
+    const text = Math.floor(t / 60) + ":" + pad(t % 60);
+    if (el.textContent !== text) el.textContent = text;
+    el.classList.toggle("on", on);
+    el.classList.toggle("done", left === 0);
+  }
+  tick();
+  setInterval(tick, 250);
+})();
+</script>

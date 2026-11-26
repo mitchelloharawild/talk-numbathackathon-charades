@@ -1,0 +1,129 @@
+---
+title: "`icebreaker::charades()`{.r}"
+format:
+  numbat-revealjs:
+    slide-number: false
+    embed-resources: true
+    css: charades.css
+    include-after-body:
+      - practice.html
+      - scores.html
+---
+
+## Form groups
+
+::: {.big}
+6 groups
+
+[4–5 people]{.sub}
+:::
+
+## How it works
+
+::: {.rules}
+```r
+icebreaker::charades
+```
+
+::: {.printed}
+```r
+function(team, actor, words) {
+  timer <- countdown(minutes = 3)             # 3 minutes per round
+  score <- 0
+  for (word in words) {                       # pick a word
+    act(actor, word)                          # act the word; no talking!
+    if (talked(actor) || cheated(team)) next  # disqualified: skip the word
+    while (word != readline("guess")) {}      # guess until you're right
+    if (!expired(timer)) score <- score + 1   # guessed in time: a point
+  }
+  return(score)
+}
+<environment: namespace:icebreaker>
+```
+:::
+:::
+
+<!-- reveal the function step by step: each step is a comment and its code.
+     steps[i] is the fragment step for line i+1 of the printed code (null = always shown) -->
+<script>
+{
+  const steps = [null, 0, 0, 1, 2, 3, 4, 5, 1, 5, null, null];
+  document.querySelectorAll('.rules .printed code > span').forEach((line, i) => {
+    if (steps[i] == null) return;
+    line.classList.add('fragment');
+    line.dataset.fragmentIndex = steps[i];
+  });
+}
+</script>
+
+## Rules
+
+::: {.cards}
+
+::: {.card}
+[🙊]{.emoji}
+**No talking**
+No mouthing or sounds
+:::
+
+::: {.card}
+[👉]{.emoji}
+**Hints allowed**
+Sounds like, number of words, which word
+:::
+
+::: {.card}
+[⏭️]{.emoji}
+**Talked or cheated?**
+Skip the card
+:::
+
+::: {.card}
+[⏱️]{.emoji}
+**3 minutes**
+Guesses after time don't count
+:::
+
+:::
+
+::: {.fragment .fade-up .winning}
+🏆 4 rounds: most words wins
+:::
+
+<!-- TODO: prize? -->
+
+## Demonstration {.practice}
+
+::: {.demo}
+
+::: {.fragment .word}
+`geom_point()`
+:::
+
+::: {.fragment .word}
+`filter()`
+:::
+
+::: {.fragment .word}
+`sample()`
+:::
+
+:::
+
+## Round 1 {.break minutes=3}
+
+## Scores {.scores data-round="1"}
+
+## Round 2 {.break minutes=3}
+
+## Scores {.scores data-round="2"}
+
+## Round 3 {.break minutes=3}
+
+## Scores {.scores data-round="3"}
+
+## Round 4 {.break minutes=3}
+
+## Final scores {.scores data-round="4"}
+
+# Happy hacking!

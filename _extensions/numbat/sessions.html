@@ -1,0 +1,25 @@
+<script>
+// Session slides: "# Name {.session kicker="9:00 am"}" shows every session in the deck, with this one
+// enlarged.
+(() => {
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
+  const sessions = [...document.querySelectorAll(".reveal .slides section.session")].map(slide => {
+    const h1 = slide.querySelector("h1");
+    return { slide, h1, name: h1.textContent, time: slide.dataset.kicker || "" };
+  });
+  sessions.forEach((now, i) => {
+    const list = el("ol", "program");
+    sessions.forEach((s, j) => {
+      const li = el("li", j < i ? "past" : j > i ? "later" : "now");
+      li.append(el("i", "mark"), el("span", "time", s.time));
+      const what = el("div", "what");
+      if (j === i) {
+        li.setAttribute("aria-current", "step");
+        what.append(el("span", "tag-next", "Up next"), now.h1);
+      } else what.append(el("span", "name", s.name));
+      li.append(what); list.append(li);
+    });
+    now.slide.prepend(el("p", "program-title", "Sessions"), list);
+  });
+})();
+</script>

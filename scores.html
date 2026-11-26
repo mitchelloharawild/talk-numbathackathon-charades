@@ -1,0 +1,83 @@
+<script>
+// Score card for slides with class "scores". Every score card shows the same
+// table: editable group names, one score column per round, and a total that
+// is summed automatically. Edits on any card appear on all of them and are
+// saved in the browser (localStorage), so they survive a reload.
+// data-round="n" on a slide highlights round n and dims the later rounds.
+(function () {
+  const GROUPS = 6, ROUNDS = 4;
+  const KEY = "charades-scores:" + location.pathname;
+  const blank = () => ({
+    names: Array.from({ length: GROUPS }, () => ""),
+    scores: Array.from({ length: GROUPS }, () => Array(ROUNDS).fill("")),
+  });
+  let state;
+  try { state = JSON.parse(localStorage.getItem(KEY)) || blank(); } catch (e) { state = blank(); }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const total = g => state.scores[g].reduce((s, v) => s + (Number(v) || 0), 0);
+
+  const tables = [];
+  document.querySelectorAll(".reveal .slides section.scores").forEach(slide => {
+    const round = Number(slide.dataset.round) || ROUNDS;
+    const t = document.createElement("table");
+    t.className = "scorecard";
+    let html = "<thead><tr><th>Group</th>";
+    for (let r = 0; r < ROUNDS; r++)
+      html += `<th class="${r + 1 === round ? "now" : r + 1 > round ? "later" : ""}">Round ${r + 1}</th>`;
+    html += "<th>Total</th></tr></thead><tbody>";
+    for (let g = 0; g < GROUPS; g++) {
+      html += `<tr><td><input class="name" data-g="${g}" placeholder="Group ${g + 1}" aria-label="Group ${g + 1} name"></td>`;
+      for (let r = 0; r < ROUNDS; r++)
+        html += `<td class="${r + 1 === round ? "now" : r + 1 > round ? "later" : ""}"><input class="score" type="number" min="0" inputmode="numeric" data-g="${g}" data-r="${r}" aria-label="Group ${g + 1} round ${r + 1}"></td>`;
+      html += `<td class="total" data-g="${g}"></td></tr>`;
+    }
+    t.innerHTML = html + "</tbody>";
+    slide.append(t);
+    if (round === ROUNDS) t.classList.add("final");
+    tables.push(t);
+  });
+  if (!tables.length) return;
+
+  function render() {
+    const totals = Array.from({ length: GROUPS }, (_, g) => total(g));
+    const best = Math.max(...totals);
+    tables.forEach(t => {
+      t.querySelectorAll("input").forEach(el => {
+        const v = el.classList.contains("name") ? state.names[el.dataset.g] : state.scores[el.dataset.g][el.dataset.r];
+        if (el !== document.activeElement && el.value !== v) el.value = v;
+      });
+      t.querySelectorAll(".total").forEach(el => {
+        el.textContent = totals[el.dataset.g];
+        el.parentElement.classList.toggle("leader", best > 0 && totals[el.dataset.g] === best);
+      });
+    });
+  }
+
+  document.addEventListener("input", e => {
+    const el = e.target;
+    if (!el.closest || !el.closest(".scorecard")) return;
+    if (el.classList.contains("name")) state.names[el.dataset.g] = el.value;
+    else state.scores[el.dataset.g][el.dataset.r] = el.value;
+    save();
+    render();
+  });
+  // Enter moves down the column, like a spreadsheet
+  document.addEventListener("keydown", e => {
+    const el = e.target;
+    if (e.key !== "Enter" || !el.closest || !el.closest(".scorecard")) return;
+    e.preventDefault();
+    const cell = el.parentElement, row = cell.parentElement;
+    const next = row.nextElementSibling && row.nextElementSibling.children[cell.cellIndex];
+    if (next) next.querySelector("input").focus(); else el.blur();
+  });
+  // reveal.js keys still work after clicking off a field
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && document.activeElement && document.activeElement.closest(".scorecard")) { document.activeElement.blur(); e.stopPropagation(); }
+  }, true);
+  // shift-click the Total header to clear every score card
+  tables.forEach(t => t.querySelector("thead th:last-child").addEventListener("click", e => {
+    if (e.shiftKey && confirm("Clear all scores and group names?")) { state = blank(); save(); render(); }
+  }));
+  render();
+})();
+</script>
