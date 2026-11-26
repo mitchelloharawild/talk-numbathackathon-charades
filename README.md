@@ -28,7 +28,8 @@ open the deck with `?print-pdf` in Chrome and print with background graphics on.
 
 Each round is a countdown slide (`{.break .round data-timer="3"}`) headed with
 its theme. The timer waits at 3:00 until you press Start, so there is time to swap
-actors and cards; the same button then restarts it from full time. Double-click
+actors and cards; the same button then becomes Reset, which stops the timer back
+at full time. Double-click
 the time to change the round's length (`2`, `2:30` or `90s`); the change is saved
 in the browser. The demonstration slide (`{.practice}`) reveals each
 word as a fragment. Its 1 minute timer starts when the first word is revealed,

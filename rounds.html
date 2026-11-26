@@ -1,7 +1,8 @@
 <script>
 // Round timers: a countdown on slides with class "round" and data-timer="3" (minutes).
 // The timer waits at full time until the button is pressed, so there is time to swap
-// actors and cards. The button starts the timer, and restarts it from full time.
+// actors and cards. The button starts the timer; while it runs (or once time is up)
+// the same button resets it, stopped at full time, ready to start again.
 // Double-click the time to change how long the round lasts (e.g. 2, 2:30 or 90s):
 // Enter or clicking away saves, Escape cancels. A change applies to that round only
 // and is saved in the browser.
@@ -40,7 +41,7 @@
     h ? h.after(r.el, r.button) : s.append(r.el, r.button);
     r.el.addEventListener("dblclick", e => { e.preventDefault(); edit(r); });
     r.button.addEventListener("click", () => {
-      r.end = Date.now() + r.duration;
+      r.end = r.end === null ? Date.now() + r.duration : null; // start, or reset
       r.button.blur(); // hand the keyboard back to reveal
       tick();
     });
@@ -85,7 +86,7 @@
       r.el.classList.toggle("done", left <= 0);
       const text = left > 0 ? fmt(left) : "Time's up!";
       if (r.el.textContent !== text) r.el.textContent = text;
-      const label = r.end === null ? "▶ Start" : "↻ Restart";
+      const label = r.end === null ? "▶ Start" : "↺ Reset";
       if (r.button.textContent !== label) r.button.textContent = label;
     }
   }

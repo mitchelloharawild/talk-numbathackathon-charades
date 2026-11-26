@@ -59,7 +59,7 @@
 .reveal .slides section.break > h2 .theme { color: var(--orange); }
 .reveal .slides section.break > .break-back { display: none !important; }
 
-/* round timers (rounds.html): one button starts or restarts; double-click the time to change it */
+/* round timers (rounds.html): one button starts or resets; double-click the time to change it */
 .reveal .slides section.round > .countdown { cursor: pointer; user-select: none; }
 .reveal .slides section.round > .countdown[hidden] { display: none; }
 .reveal .slides section.round > .countdown.done { color: var(--orange); }
